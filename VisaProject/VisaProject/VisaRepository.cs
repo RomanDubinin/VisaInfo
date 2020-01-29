@@ -1,9 +1,7 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
-using VisaProject;
 
-namespace DataContainer
+namespace VisaProject
 {
     public class VisaRepository : IRepository
     {
