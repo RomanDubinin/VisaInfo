@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using DataContainer;
 using NUnit.Framework;
+using UnitTests.Mock;
 using VisaProject;
 
 namespace UnitTests
@@ -9,12 +10,14 @@ namespace UnitTests
     public class VisaRepositoryTests
     {
         private readonly string fileName = "testInfos.txt";
+        private IFileNameFinder fileNameFinder { get; set; }
         private VisaRepository VisaRepository { get; set; }
 
         [SetUp]
         public void Setup()
         {
-            VisaRepository = new VisaRepository(fileName);
+            fileNameFinder = new TestFileNameFinder(fileName);
+            VisaRepository = new VisaRepository(fileNameFinder);
         }
 
         [Test]

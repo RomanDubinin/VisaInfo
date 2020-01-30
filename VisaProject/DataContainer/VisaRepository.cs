@@ -6,27 +6,27 @@ namespace DataContainer
 {
     public class VisaRepository : IRepository
     {
-        private string fileName;
+        private IFileNameFinder actualFileNameFinder;
 
-        public VisaRepository(string fileName)
+        public VisaRepository(IFileNameFinder actualFileNameFinder)
         {
-            this.fileName = fileName;
+            this.actualFileNameFinder = actualFileNameFinder;
         }
 
         public void Write(VisaInfo info)
         {
-            File.AppendAllText(fileName, $"{info.ToString()}\n");
+            File.AppendAllText(actualFileNameFinder.FindName(), $"{info.ToString()}\n");
         }
 
         public void RewriteAll(VisaInfo[] infos)
         {
             var data = string.Join("\n", infos.Select(x => x.ToString()));
-            File.WriteAllText(fileName, data);
+            File.WriteAllText(actualFileNameFinder.FindName(), data);
         }
 
         public VisaInfo[] ReadAll()
         {
-            var visaStrings = File.ReadLines(fileName);
+            var visaStrings = File.ReadLines(actualFileNameFinder.FindName());
 
             return visaStrings
                    .Select(x => new VisaInfo(x))

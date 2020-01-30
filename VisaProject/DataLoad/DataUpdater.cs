@@ -38,7 +38,6 @@ namespace DataLoad
                 for (int i = 1; i <= dailyAmount; i++)
                 {
                     var statementNumber = statementNumberGenerator.Generate(city, currentDate, i);
-                    Console.WriteLine(statementNumber);
                     var visaResult = await visaResultLoader.LoadVisaResultByStatementNumber(statementNumber);
                     var visaInfo = new VisaInfo(visaResult, statementNumber, currentDate);
                     visaRepository.Write(visaInfo);
