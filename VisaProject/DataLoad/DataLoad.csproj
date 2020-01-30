@@ -6,6 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\DataContainer\DataContainer.csproj" />
       <ProjectReference Include="..\VisaProject\VisaProject.csproj" />
     </ItemGroup>
 
