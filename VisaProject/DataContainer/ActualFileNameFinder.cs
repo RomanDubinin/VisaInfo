@@ -1,4 +1,7 @@
-﻿namespace DataContainer
+﻿using System.IO;
+using System.Linq;
+
+namespace DataContainer
 {
     public class ActualFileNameFinder : IFileNameFinder
     {
@@ -10,7 +13,8 @@
 
         public string FindName()
         {
-            return null;
+            var dir = new DirectoryInfo(directory);
+            return dir.GetFiles("*.txt").OrderBy(x => x.Name).Last().FullName;
         }
     }
 }
