@@ -13,12 +13,6 @@ namespace DataContainer
             this.actualFileNameFinder = actualFileNameFinder;
         }
 
-        public void Write(VisaInfo info)
-        {
-            var fileName = actualFileNameFinder.FindName(info.City);
-            File.AppendAllText(fileName, $"{info.ToString()}\n");
-        }
-
         public VisaInfo[] Read(VisaInfoFilter filter)
         {
             var fileName = actualFileNameFinder.FindName(filter.City);

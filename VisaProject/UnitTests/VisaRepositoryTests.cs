@@ -10,8 +10,7 @@ namespace UnitTests
     public class VisaRepositoryTests
     {
         private static readonly string city = "City";
-        private readonly string fileName = "testInfos.txt";
-        private readonly VisaInfoFilter filter = new VisaInfoFilter(city);
+        private readonly string fullFileName = Path.Combine(Directory.GetCurrentDirectory(), city, "testInfos.txt");
         private Mock<IFileNameFinder> fileNameFinder { get; set; }
         private VisaRepository VisaRepository { get; set; }
 
@@ -21,7 +20,7 @@ namespace UnitTests
             Directory.CreateDirectory(city);
             fileNameFinder = new Mock<IFileNameFinder>();
             fileNameFinder.Setup(x => x.FindName(city))
-                          .Returns(Path.Combine(Directory.GetCurrentDirectory(), city, fileName));
+                          .Returns(fullFileName);
             VisaRepository = new VisaRepository(fileNameFinder.Object);
         }
 
@@ -35,8 +34,9 @@ namespace UnitTests
             };
             foreach (var visaInfo in expectedInfos)
             {
-                VisaRepository.Write(visaInfo);
+                WriteToFile(visaInfo);
             }
+            var filter = new VisaInfoFilter(city);
             var actualInfos = VisaRepository.Read(filter);
 
             Assert.That(actualInfos, Is.EqualTo(expectedInfos));
@@ -55,8 +55,10 @@ namespace UnitTests
             };
             foreach (var visaInfo in expectedInfos)
             {
-                VisaRepository.Write(visaInfo);
+                WriteToFile(visaInfo);
             }
+
+            var filter = new VisaInfoFilter(city);
             var actualInfos = VisaRepository.Read(filter);
 
             Assert.That(actualInfos, Is.EqualTo(expectedInfos));
@@ -75,8 +77,9 @@ namespace UnitTests
             };
             foreach (var expectedInfo in expectedInfos)
             {
-                VisaRepository.Write(expectedInfo);
+                WriteToFile(expectedInfo);
             }
+            var filter = new VisaInfoFilter(city);
             var actualInfos = VisaRepository.Read(filter);
 
             Assert.That(actualInfos, Is.EqualTo(expectedInfos));
@@ -85,8 +88,13 @@ namespace UnitTests
         [TearDown]
         public void Teardown()
         {
-            File.Delete(Path.Combine(city, fileName));
+            File.Delete(fullFileName);
             Directory.Delete(city);
+        }
+
+        private void WriteToFile(VisaInfo info)
+        {
+            File.AppendAllText(fullFileName, $"{info.ToString()}\n");
         }
     }
 }
