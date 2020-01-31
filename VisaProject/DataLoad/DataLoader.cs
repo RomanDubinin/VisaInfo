@@ -5,18 +5,18 @@ using VisaProject;
 
 namespace DataLoad
 {
-    public class DataUpdater
+    public class DataLoader
     {
         private readonly StatementNumberGenerator statementNumberGenerator;
         private readonly IVisaResultLoader visaResultLoader;
 
-        public DataUpdater(StatementNumberGenerator statementNumberGenerator, IVisaResultLoader visaResultLoader)
+        public DataLoader(StatementNumberGenerator statementNumberGenerator, IVisaResultLoader visaResultLoader)
         {
             this.statementNumberGenerator = statementNumberGenerator;
             this.visaResultLoader = visaResultLoader;
         }
 
-        public async IAsyncEnumerable<VisaInfo> UpdateData(
+        public async IAsyncEnumerable<VisaInfo> GetVisaInfos(
             DateTime dateFrom,
             DateTime dateTo,
             string city,

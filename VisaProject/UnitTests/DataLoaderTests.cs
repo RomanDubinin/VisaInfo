@@ -8,10 +8,10 @@ using VisaProject;
 
 namespace UnitTests
 {
-    public class DataUpdaterTests
+    public class DataLoaderTests
     {
         private Mock<IVisaResultLoader> visaResultLoader;
-        private DataUpdater dataUpdater;
+        private DataLoader dataLoader;
         private StatementNumberGenerator statementNumberGenerator;
         private readonly string city = "CITY";
 
@@ -22,7 +22,7 @@ namespace UnitTests
             visaResultLoader.Setup(x => x.LoadVisaResultByStatementNumber(It.IsAny<string>()))
                             .Returns(Task.FromResult(VisaResult.InService));
             statementNumberGenerator = new StatementNumberGenerator();
-            dataUpdater = new DataUpdater(statementNumberGenerator, visaResultLoader.Object);
+            dataLoader = new DataLoader(statementNumberGenerator, visaResultLoader.Object);
         }
 
         [Test]
@@ -38,8 +38,8 @@ namespace UnitTests
                 new VisaInfo(city, VisaResult.InService, "CITY202004010003", new DateTime(2020, 4, 1)),
             };
 
-            var actualData = await dataUpdater
-                                   .UpdateData(dateFrom, dateTo, city, 3, dayOfWeek => true, () => { })
+            var actualData = await dataLoader
+                                   .GetVisaInfos(dateFrom, dateTo, city, 3, dayOfWeek => true, () => { })
                                    .ToArrayAsync();
 
             Assert.That(actualData, Is.EqualTo(expectedData));
@@ -61,8 +61,8 @@ namespace UnitTests
                 new VisaInfo(city, VisaResult.InService, "CITY202004070001", new DateTime(2020, 4, 7)),
             };
 
-            var actualData = await dataUpdater
-                                   .UpdateData(dateFrom, dateTo, city, 1, IsWorkingDay, () => { })
+            var actualData = await dataLoader
+                                   .GetVisaInfos(dateFrom, dateTo, city, 1, IsWorkingDay, () => { })
                                    .ToArrayAsync();
 
             Assert.That(actualData, Is.EqualTo(expectedData));
