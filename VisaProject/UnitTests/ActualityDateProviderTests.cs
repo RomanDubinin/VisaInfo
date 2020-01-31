@@ -11,7 +11,7 @@ namespace UnitTests
         private IActualityDateProvider actualityDateProvider;
 
         [Test]
-        public void Test()
+        public void TestGetActualDate()
         {
             var expectedDate = new DateTime(2019, 03, 04, 03, 02, 01);
             var fileNameFinder = new Mock<IFileNameFinder>();
