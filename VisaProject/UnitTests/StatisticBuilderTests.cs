@@ -39,7 +39,11 @@ namespace UnitTests
                 new VisaInfo(VisaResult.Success, "6", date2),
                 new VisaInfo(VisaResult.InService, "7", date2),
             };
-            Repository.RewriteAll(visaInfos);
+
+            foreach (var visaInfo in visaInfos)
+            {
+                Repository.Write(visaInfo);
+            }
 
             var expectedStatistic = new[]
             {

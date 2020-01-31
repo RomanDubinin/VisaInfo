@@ -2,6 +2,6 @@
 {
     public interface IFileNameFinder
     {
-        string FindName();
+        string FindName(string subDirectory);
     }
 }

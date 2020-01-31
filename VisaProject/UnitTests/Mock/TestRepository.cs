@@ -8,17 +8,12 @@ namespace UnitTests.Mock
     {
         private List<VisaInfo> infos = new List<VisaInfo>();
 
-        public void RewriteAll(VisaInfo[] infos)
-        {
-            this.infos = infos.ToList();
-        }
-
         public void Write(VisaInfo info)
         {
             infos.Add(info);
         }
 
-        public VisaInfo[] ReadAll()
+        public VisaInfo[] Read(VisaInfoFilter filter)
         {
             return infos.ToArray();
         }

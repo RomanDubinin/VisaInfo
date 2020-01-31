@@ -15,18 +15,14 @@ namespace DataContainer
 
         public void Write(VisaInfo info)
         {
-            File.AppendAllText(actualFileNameFinder.FindName(), $"{info.ToString()}\n");
+            var fileName = actualFileNameFinder.FindName(info.City);
+            File.AppendAllText(fileName, $"{info.ToString()}\n");
         }
 
-        public void RewriteAll(VisaInfo[] infos)
+        public VisaInfo[] Read(VisaInfoFilter filter)
         {
-            var data = string.Join("\n", infos.Select(x => x.ToString()));
-            File.WriteAllText(actualFileNameFinder.FindName(), data);
-        }
-
-        public VisaInfo[] ReadAll()
-        {
-            var visaStrings = File.ReadLines(actualFileNameFinder.FindName());
+            var fileName = actualFileNameFinder.FindName(filter.City);
+            var visaStrings = File.ReadLines(fileName);
 
             return visaStrings
                    .Select(x => new VisaInfo(x))

@@ -13,6 +13,7 @@ namespace UnitTests
         public DataUpdater DataUpdater;
         public StatementNumberGenerator StatementNumberGenerator;
         public readonly string city = "CITY";
+        public readonly VisaInfoFilter EmptyFilter = new VisaInfoFilter();
 
         [SetUp]
         public void Setup()
@@ -38,7 +39,7 @@ namespace UnitTests
 
             DataUpdater.UpdateData(dateFrom, dateTo, city, 3, dayOfWeek => true, () => { });
 
-            var actualData = Repository.ReadAll();
+            var actualData = Repository.Read(EmptyFilter);
 
             Assert.That(actualData, Is.EqualTo(expectedData));
         }
@@ -61,7 +62,7 @@ namespace UnitTests
 
             DataUpdater.UpdateData(dateFrom, dateTo, city, 1, IsWorkingDay, () => { });
 
-            var actualData = Repository.ReadAll();
+            var actualData = Repository.Read(EmptyFilter);
 
             Assert.That(actualData, Is.EqualTo(expectedData));
         }

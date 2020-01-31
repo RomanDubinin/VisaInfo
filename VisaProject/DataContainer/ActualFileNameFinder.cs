@@ -11,9 +11,9 @@ namespace DataContainer
             this.directory = directory;
         }
 
-        public string FindName()
+        public string FindName(string subDirectory)
         {
-            var dir = new DirectoryInfo(directory);
+            var dir = new DirectoryInfo(Path.Combine(directory, subDirectory));
             return dir.GetFiles("*.txt").OrderBy(x => x.Name).Last().FullName;
         }
     }

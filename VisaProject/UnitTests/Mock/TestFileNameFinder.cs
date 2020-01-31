@@ -11,7 +11,7 @@ namespace UnitTests.Mock
             this.fileName = fileName;
         }
 
-        public string FindName()
+        public string FindName(string subDirectory)
         {
             return fileName;
         }

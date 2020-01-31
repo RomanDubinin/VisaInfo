@@ -27,7 +27,8 @@ namespace WebVisaProject.Controllers
         [HttpGet]
         public VisaStatisticItem[] Get(string city)
         {
-            var infos = repository.ReadAll();
+            var filter = new VisaInfoFilter(city);
+            var infos = repository.Read(filter);
             var statistic = statisticBuilder.BuildStatisticByDays(infos);
             return statistic;
         }

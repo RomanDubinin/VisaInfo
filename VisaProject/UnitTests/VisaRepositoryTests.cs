@@ -10,6 +10,7 @@ namespace UnitTests
     public class VisaRepositoryTests
     {
         private readonly string fileName = "testInfos.txt";
+        private readonly VisaInfoFilter filter = new VisaInfoFilter("");
         private IFileNameFinder fileNameFinder { get; set; }
         private VisaRepository VisaRepository { get; set; }
 
@@ -28,8 +29,11 @@ namespace UnitTests
             {
                 new VisaInfo(VisaResult.None, "number", visaDate)
             };
-            VisaRepository.RewriteAll(expectedInfos);
-            var actualInfos = VisaRepository.ReadAll();
+            foreach (var visaInfo in expectedInfos)
+            {
+                VisaRepository.Write(visaInfo);
+            }
+            var actualInfos = VisaRepository.Read(filter);
 
             Assert.That(actualInfos, Is.EqualTo(expectedInfos));
         }
@@ -45,8 +49,11 @@ namespace UnitTests
                 new VisaInfo(VisaResult.Success, "number3", visaDate),
                 new VisaInfo(VisaResult.InService, "number4", visaDate)
             };
-            VisaRepository.RewriteAll(expectedInfos);
-            var actualInfos = VisaRepository.ReadAll();
+            foreach (var visaInfo in expectedInfos)
+            {
+                VisaRepository.Write(visaInfo);
+            }
+            var actualInfos = VisaRepository.Read(filter);
 
             Assert.That(actualInfos, Is.EqualTo(expectedInfos));
         }
@@ -66,7 +73,7 @@ namespace UnitTests
             {
                 VisaRepository.Write(expectedInfo);
             }
-            var actualInfos = VisaRepository.ReadAll();
+            var actualInfos = VisaRepository.Read(filter);
 
             Assert.That(actualInfos, Is.EqualTo(expectedInfos));
         }

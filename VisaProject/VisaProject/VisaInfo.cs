@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace VisaProject
 {
@@ -7,6 +8,7 @@ namespace VisaProject
         public VisaResult Result { get; }
         public string StatementNumber { get; }
         public DateTime StatementDate { get; }
+        public string City { get => ToString().Substring(0, 4); }
 
         public VisaInfo(VisaResult result, string statementNumber, DateTime statementDate)
         {
@@ -30,7 +32,7 @@ namespace VisaProject
 
         public override string ToString()
         {
-            return $@"{StatementDate:yyyy.MM.dd} {StatementNumber} {Result}";
+            return $"{StatementDate:yyyy.MM.dd} {StatementNumber} {Result}";
         }
     }
 }
