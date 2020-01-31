@@ -1,19 +1,22 @@
-﻿using DataContainer;
+﻿using System.IO;
+using DataContainer;
 
 namespace UnitTests.Mock
 {
     public class TestFileNameFinder : IFileNameFinder
     {
-        private string fileName;
+        private string directory;
+        private string filename;
 
-        public TestFileNameFinder(string fileName)
+        public TestFileNameFinder(string directory, string filename)
         {
-            this.fileName = fileName;
+            this.directory = directory;
+            this.filename = filename;
         }
 
         public string FindName(string subDirectory)
         {
-            return fileName;
+            return Path.Combine(directory, subDirectory, filename);
         }
     }
 }

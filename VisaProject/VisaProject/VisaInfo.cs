@@ -8,7 +8,7 @@ namespace VisaProject
         public VisaResult Result { get; }
         public string StatementNumber { get; }
         public DateTime StatementDate { get; }
-        public string City { get => ToString().Substring(0, 4); }
+        public string City { get => StatementNumber.Substring(0, 4); }
 
         public VisaInfo(VisaResult result, string statementNumber, DateTime statementDate)
         {
