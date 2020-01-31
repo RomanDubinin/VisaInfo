@@ -30,6 +30,7 @@ namespace WebVisaProject
             services.AddControllers();
             services.AddSingleton(typeof(IRepository), typeof(VisaRepository));
             services.AddSingleton(typeof(StatisticBuilder), typeof(StatisticBuilder));
+            services.AddSingleton(typeof(IActualityDateProvider), typeof(ActualityDateProvider));
             services.AddSingleton<IFileNameFinder>(new ActualFileNameFinder(Configuration.GetValue<string>("PathToData")));
         }
 

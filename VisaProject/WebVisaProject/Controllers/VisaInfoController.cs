@@ -13,24 +13,27 @@ namespace WebVisaProject.Controllers
         private readonly ILogger<VisaInfoController> _logger;
         private readonly IRepository repository;
         private readonly StatisticBuilder statisticBuilder;
+        private readonly IActualityDateProvider actualityDateProvider;
 
         public VisaInfoController(
             ILogger<VisaInfoController> logger,
             IRepository repository,
-            StatisticBuilder statisticBuilder)
+            StatisticBuilder statisticBuilder, IActualityDateProvider actualityDateProvider)
         {
             _logger = logger;
             this.repository = repository;
             this.statisticBuilder = statisticBuilder;
+            this.actualityDateProvider = actualityDateProvider;
         }
 
         [HttpGet]
-        public VisaStatisticItem[] Get(string city)
+        public VisaStatisticResult Get(string city)
         {
+            var actualDate = actualityDateProvider.GetActualityDate(city);
             var filter = new VisaInfoFilter(city);
             var infos = repository.Read(filter);
             var statistic = statisticBuilder.BuildStatisticByDays(infos);
-            return statistic;
+            return new VisaStatisticResult(actualDate, statistic);
         }
     }
 }
