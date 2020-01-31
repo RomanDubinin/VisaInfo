@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Threading.Tasks;
 using DataLoad;
+using Moq;
 using NUnit.Framework;
 using UnitTests.Mock;
 using VisaProject;
@@ -9,7 +11,7 @@ namespace UnitTests
     public class DataUpdaterTests
     {
         public IRepository Repository;
-        public IVisaResultLoader VisaResultLoader;
+        public Mock<IVisaResultLoader> VisaResultLoader;
         public DataUpdater DataUpdater;
         public StatementNumberGenerator StatementNumberGenerator;
         public readonly string City = "CITY";
@@ -19,9 +21,11 @@ namespace UnitTests
         public void Setup()
         {
             Repository = new TestRepository();
-            VisaResultLoader = new TestVisaResultLoader();
+            VisaResultLoader = new Mock<IVisaResultLoader>();
+            VisaResultLoader.Setup(x => x.LoadVisaResultByStatementNumber(It.IsAny<string>()))
+                            .Returns(Task.FromResult(VisaResult.InService));
             StatementNumberGenerator = new StatementNumberGenerator();
-            DataUpdater = new DataUpdater(StatementNumberGenerator, VisaResultLoader, Repository);
+            DataUpdater = new DataUpdater(StatementNumberGenerator, VisaResultLoader.Object, Repository);
         }
 
         [Test]

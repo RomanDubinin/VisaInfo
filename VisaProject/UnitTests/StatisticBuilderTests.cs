@@ -1,6 +1,6 @@
 ﻿using System;
+using Moq;
 using NUnit.Framework;
-using UnitTests.Mock;
 using VisaProject;
 
 namespace UnitTests
@@ -8,14 +8,14 @@ namespace UnitTests
     public class StatisticBuilderTests
     {
         public string City;
-        public IRepository Repository;
+        public Mock<IRepository> Repository;
         public StatisticBuilder StatisticBuilder;
 
         [SetUp]
         public void Setup()
         {
             City = "city";
-            Repository = new TestRepository();
+            Repository = new Mock<IRepository>();
             StatisticBuilder = new StatisticBuilder();
         }
 
@@ -24,6 +24,7 @@ namespace UnitTests
         {
             var date1 = new DateTime(2018, 04, 05);
             var date2 = new DateTime(2018, 04, 06);
+
             var visaInfos = new[]
             {
                 new VisaInfo(City, VisaResult.None, "1", date1),
@@ -41,11 +42,8 @@ namespace UnitTests
                 new VisaInfo(City, VisaResult.Success, "6", date2),
                 new VisaInfo(City, VisaResult.InService, "7", date2),
             };
-
-            foreach (var visaInfo in visaInfos)
-            {
-                Repository.Write(visaInfo);
-            }
+            Repository.Setup(x => x.Read(It.IsAny<VisaInfoFilter>()))
+                      .Returns(visaInfos);
 
             var expectedStatistic = new[]
             {

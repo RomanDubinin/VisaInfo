@@ -2,26 +2,27 @@ using System;
 using System.IO;
 using DataContainer;
 using NUnit.Framework;
-using UnitTests.Mock;
 using VisaProject;
+using Moq;
 
 namespace UnitTests
 {
     public class VisaRepositoryTests
     {
-        private readonly string directory = Directory.GetCurrentDirectory();
         private static readonly string city = "City";
         private readonly string fileName = "testInfos.txt";
         private readonly VisaInfoFilter filter = new VisaInfoFilter(city);
-        private IFileNameFinder fileNameFinder { get; set; }
+        private Mock<IFileNameFinder> fileNameFinder { get; set; }
         private VisaRepository VisaRepository { get; set; }
 
         [SetUp]
         public void Setup()
         {
             Directory.CreateDirectory(city);
-            fileNameFinder = new TestFileNameFinder(directory, fileName);
-            VisaRepository = new VisaRepository(fileNameFinder);
+            fileNameFinder = new Mock<IFileNameFinder>();
+            fileNameFinder.Setup(x => x.FindName(city))
+                          .Returns(Path.Combine(Directory.GetCurrentDirectory(), city, fileName));
+            VisaRepository = new VisaRepository(fileNameFinder.Object);
         }
 
         [Test]
