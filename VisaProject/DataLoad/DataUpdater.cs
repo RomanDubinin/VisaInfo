@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using VisaProject;
 
@@ -8,16 +9,14 @@ namespace DataLoad
     {
         private readonly StatementNumberGenerator statementNumberGenerator;
         private readonly IVisaResultLoader visaResultLoader;
-        private readonly IRepository visaRepository;
 
-        public DataUpdater(StatementNumberGenerator statementNumberGenerator, IVisaResultLoader visaResultLoader, IRepository visaRepository)
+        public DataUpdater(StatementNumberGenerator statementNumberGenerator, IVisaResultLoader visaResultLoader)
         {
             this.statementNumberGenerator = statementNumberGenerator;
             this.visaResultLoader = visaResultLoader;
-            this.visaRepository = visaRepository;
         }
 
-        public async Task UpdateData(
+        public async IAsyncEnumerable<VisaInfo> UpdateData(
             DateTime dateFrom,
             DateTime dateTo,
             string city,
@@ -35,12 +34,12 @@ namespace DataLoad
                     continue;
                 }
 
-                for (int i = 1; i <= dailyAmount; i++)
+                for (var i = 1; i <= dailyAmount; i++)
                 {
                     var statementNumber = statementNumberGenerator.Generate(city, currentDate, i);
                     var visaResult = await visaResultLoader.LoadVisaResultByStatementNumber(statementNumber);
                     var visaInfo = new VisaInfo(city, visaResult, statementNumber, currentDate);
-                    visaRepository.Write(visaInfo);
+                    yield return visaInfo;
                     eachItemWait();
                 }
 

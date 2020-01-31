@@ -1,35 +1,32 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using DataLoad;
 using Moq;
 using NUnit.Framework;
-using UnitTests.Mock;
 using VisaProject;
 
 namespace UnitTests
 {
     public class DataUpdaterTests
     {
-        private IRepository repository;
         private Mock<IVisaResultLoader> visaResultLoader;
         private DataUpdater dataUpdater;
         private StatementNumberGenerator statementNumberGenerator;
         private readonly string city = "CITY";
-        private readonly VisaInfoFilter emptyFilter = new VisaInfoFilter();
 
         [SetUp]
         public void Setup()
         {
-            repository = new TestRepository();
             visaResultLoader = new Mock<IVisaResultLoader>();
             visaResultLoader.Setup(x => x.LoadVisaResultByStatementNumber(It.IsAny<string>()))
                             .Returns(Task.FromResult(VisaResult.InService));
             statementNumberGenerator = new StatementNumberGenerator();
-            dataUpdater = new DataUpdater(statementNumberGenerator, visaResultLoader.Object, repository);
+            dataUpdater = new DataUpdater(statementNumberGenerator, visaResultLoader.Object);
         }
 
         [Test]
-        public void TestUpdateData3ItemsPerDay()
+        public async Task TestUpdateData3ItemsPerDay()
         {
             var dateFrom = new DateTime(2020, 4, 1);
             var dateTo = new DateTime(2020, 4, 1);
@@ -41,15 +38,15 @@ namespace UnitTests
                 new VisaInfo(city, VisaResult.InService, "CITY202004010003", new DateTime(2020, 4, 1)),
             };
 
-            dataUpdater.UpdateData(dateFrom, dateTo, city, 3, dayOfWeek => true, () => { });
-
-            var actualData = repository.Read(emptyFilter);
+            var actualData = await dataUpdater
+                                   .UpdateData(dateFrom, dateTo, city, 3, dayOfWeek => true, () => { })
+                                   .ToArrayAsync();
 
             Assert.That(actualData, Is.EqualTo(expectedData));
         }
 
         [Test]
-        public void TestUpdateDataWithOnlySomeDaysOfWeek()
+        public async Task TestUpdateDataWithOnlySomeDaysOfWeek()
         {
             var dateFrom = new DateTime(2020, 4, 1);
             var dateTo = new DateTime(2020, 4, 7);
@@ -64,9 +61,9 @@ namespace UnitTests
                 new VisaInfo(city, VisaResult.InService, "CITY202004070001", new DateTime(2020, 4, 7)),
             };
 
-            dataUpdater.UpdateData(dateFrom, dateTo, city, 1, IsWorkingDay, () => { });
-
-            var actualData = repository.Read(emptyFilter);
+            var actualData = await dataUpdater
+                                   .UpdateData(dateFrom, dateTo, city, 1, IsWorkingDay, () => { })
+                                   .ToArrayAsync();
 
             Assert.That(actualData, Is.EqualTo(expectedData));
         }
