@@ -10,16 +10,16 @@ namespace UnitTests
     public class VisaRepositoryTests
     {
         private readonly string directory = Directory.GetCurrentDirectory();
-        private static readonly string subDirectory = "City";
+        private static readonly string city = "City";
         private readonly string fileName = "testInfos.txt";
-        private readonly VisaInfoFilter filter = new VisaInfoFilter(subDirectory);
+        private readonly VisaInfoFilter filter = new VisaInfoFilter(city);
         private IFileNameFinder fileNameFinder { get; set; }
         private VisaRepository VisaRepository { get; set; }
 
         [SetUp]
         public void Setup()
         {
-            Directory.CreateDirectory(subDirectory);
+            Directory.CreateDirectory(city);
             fileNameFinder = new TestFileNameFinder(directory, fileName);
             VisaRepository = new VisaRepository(fileNameFinder);
         }
@@ -30,7 +30,7 @@ namespace UnitTests
             var visaDate = DateTime.Today;
             var expectedInfos = new[]
             {
-                new VisaInfo(VisaResult.None, "City_number", visaDate)
+                new VisaInfo(city, VisaResult.None, "number", visaDate)
             };
             foreach (var visaInfo in expectedInfos)
             {
@@ -47,10 +47,10 @@ namespace UnitTests
             var visaDate = DateTime.Today;
             var expectedInfos = new[]
             {
-                new VisaInfo(VisaResult.None, "City_number", visaDate),
-                new VisaInfo(VisaResult.Failure, "City_number2", visaDate),
-                new VisaInfo(VisaResult.Success, "City_number3", visaDate),
-                new VisaInfo(VisaResult.InService, "City_number4", visaDate)
+                new VisaInfo(city, VisaResult.None, "number", visaDate),
+                new VisaInfo(city, VisaResult.Failure, "number2", visaDate),
+                new VisaInfo(city, VisaResult.Success, "number3", visaDate),
+                new VisaInfo(city, VisaResult.InService, "number4", visaDate)
             };
             foreach (var visaInfo in expectedInfos)
             {
@@ -67,10 +67,10 @@ namespace UnitTests
             var visaDate = DateTime.Today;
             var expectedInfos = new[]
             {
-                new VisaInfo(VisaResult.None, "City_number", visaDate),
-                new VisaInfo(VisaResult.Failure, "City_number2", visaDate),
-                new VisaInfo(VisaResult.Success, "City_number3", visaDate),
-                new VisaInfo(VisaResult.InService, "City_number4", visaDate)
+                new VisaInfo(city, VisaResult.None, "number", visaDate),
+                new VisaInfo(city, VisaResult.Failure, "number2", visaDate),
+                new VisaInfo(city, VisaResult.Success, "number3", visaDate),
+                new VisaInfo(city, VisaResult.InService, "number4", visaDate)
             };
             foreach (var expectedInfo in expectedInfos)
             {
@@ -84,8 +84,8 @@ namespace UnitTests
         [TearDown]
         public void Teardown()
         {
-            File.Delete(Path.Combine(subDirectory, fileName));
-            Directory.Delete(subDirectory);
+            File.Delete(Path.Combine(city, fileName));
+            Directory.Delete(city);
         }
     }
 }

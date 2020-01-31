@@ -39,7 +39,7 @@ namespace DataLoad
                 {
                     var statementNumber = statementNumberGenerator.Generate(city, currentDate, i);
                     var visaResult = await visaResultLoader.LoadVisaResultByStatementNumber(statementNumber);
-                    var visaInfo = new VisaInfo(visaResult, statementNumber, currentDate);
+                    var visaInfo = new VisaInfo(city, visaResult, statementNumber, currentDate);
                     visaRepository.Write(visaInfo);
                     eachItemWait();
                 }
