@@ -10,4 +10,8 @@
       <ProjectReference Include="..\VisaProject\VisaProject.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Cronos" Version="0.7.0" />
+    </ItemGroup>
+
 </Project>
