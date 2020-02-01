@@ -48,7 +48,7 @@ namespace DataLoad
             foreach (var city in cities)
             {
                 Log($"Start load {city}");
-                var fileName = Path.Join(baseDirectory, city, $"temp-{city}.txt");
+                var fileName = Path.Join(baseDirectory, city, $"_temp-{city}.txt");
                 CreateFile(fileName);
 
                 try
