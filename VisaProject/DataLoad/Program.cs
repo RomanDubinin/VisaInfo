@@ -122,7 +122,7 @@ namespace DataLoad
 
         private static void Log(string text)
         {
-            File.WriteAllText(logFile, $"{text}\n");
+            File.AppendAllText(logFile, $"{DateTime.UtcNow} - {text}\n");
         }
     }
 }
