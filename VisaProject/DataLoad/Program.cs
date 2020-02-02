@@ -14,6 +14,7 @@ namespace DataLoad
         private static readonly StatementNumberGenerator statementNumberGenerator = new StatementNumberGenerator();
         private static readonly int dailyAmount = 16;
         private static readonly string logFile = "/root/VisaInfos/Log/Log.txt";
+        private static readonly string dateFormat = "yyyy.MM.dd.hh.mm.ss";
 
         private static DataLoader dataLoader;
 
@@ -61,7 +62,7 @@ namespace DataLoad
                     throw;
                 }
 
-                var newFileName = Path.Join(baseDirectory, city, $"{city}_{DateTime.UtcNow:yyyy.MM.dd.hh.mm.ss}.txt");
+                var newFileName = Path.Join(baseDirectory, city, $"{city}_{DateTime.UtcNow.ToString(dateFormat)}.txt");
                 File.Move(fileName, newFileName);
                 Log($"End load {city}");
             }
@@ -122,7 +123,7 @@ namespace DataLoad
 
         private static void Log(string text)
         {
-            File.AppendAllText(logFile, $"{DateTime.UtcNow} - {text}\n");
+            File.AppendAllText(logFile, $"{DateTime.UtcNow.ToString(dateFormat)} - {text}\n");
         }
     }
 }
