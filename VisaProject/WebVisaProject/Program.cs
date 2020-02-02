@@ -20,7 +20,10 @@ namespace WebVisaProject
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    //does not work at prod without UseUrls()
+                    webBuilder
+                        .UseStartup<Startup>()
+                        .UseUrls("http://*:5000");
                 });
     }
 }
