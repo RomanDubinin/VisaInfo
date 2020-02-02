@@ -12,7 +12,7 @@ namespace DataLoad
         private static readonly string baseDirectory = "/root/VisaInfos";
         private static readonly IVisaResultLoader visaResultLoader = new VisaResultLoader();
         private static readonly StatementNumberGenerator statementNumberGenerator = new StatementNumberGenerator();
-        private static readonly int dailyAmount = 16;
+        private static readonly int dailyAmount = 20;
         private static readonly string logFile = "/root/VisaInfos/Log/Log.txt";
         private static readonly string dateFormat = "yyyy.MM.dd.hh.mm.ss";
 
