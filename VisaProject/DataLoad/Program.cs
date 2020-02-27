@@ -86,7 +86,7 @@ namespace DataLoad
             }
         }
 
-        private static async Task RepeatDaily(Action action, CronExpression cronExpression)
+        private static async Task RepeatDaily(Func<Task> action, CronExpression cronExpression)
         {
             var now = DateTime.UtcNow;
             while (true)
@@ -97,7 +97,7 @@ namespace DataLoad
                 await Task.Delay(timeToStart, CancellationToken.None);
 
                 Log($"Action starts at {DateTime.UtcNow:hh:mm}");
-                action();
+                await action();
                 now = DateTime.UtcNow;
                 Log($"Action ended at {now:hh:mm}");
             }
