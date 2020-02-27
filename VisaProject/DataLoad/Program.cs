@@ -21,7 +21,7 @@ namespace DataLoad
         static async Task Main(string[] args)
         {
 
-            var expression = "0 2 * * *";
+            var expression = "0 0 * * *";
             var croneExpression = CronExpression.Parse(expression);
             dataLoader = new DataLoader(statementNumberGenerator, visaResultLoader);
 
