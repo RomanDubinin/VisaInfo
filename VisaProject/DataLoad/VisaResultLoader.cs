@@ -11,11 +11,12 @@ namespace DataLoad
     public class VisaResultLoader : IVisaResultLoader
     {
         private readonly int retryCount = 5;
-        private readonly HttpClient client = new HttpClient();
+        private readonly HttpClient client;
         private readonly VisaInfoParser visaInfoParser = new VisaInfoParser();
 
-        public VisaResultLoader()
+        public VisaResultLoader(HttpClient client)
         {
+            this.client = client;
             client.DefaultRequestHeaders.Add("Pragma", "no-cache");
             client.DefaultRequestHeaders.Add("Cache-Control", "no-cache");
         }

@@ -10,7 +10,7 @@ namespace DataLoad
     class Program
     {
         private static readonly string baseDirectory = "/root/VisaInfos";
-        private static readonly IVisaResultLoader visaResultLoader = new VisaResultLoader();
+        private static readonly IVisaResultLoader visaResultLoader = VisaResultLoaderFactory.GetTorLoader();
         private static readonly StatementNumberGenerator statementNumberGenerator = new StatementNumberGenerator();
         private static readonly int dailyAmount = 20;
         private static readonly string logFile = "/root/VisaInfos/Log/Log.txt";
